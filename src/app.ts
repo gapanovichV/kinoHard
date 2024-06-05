@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 const bot = new Telegraf(process.env.BOT_TOKEN as string)
 
-bot.start((ctx) => ctx.reply('Welcome'))
+bot.start((ctx) => ctx.reply('Welcomse'))
 bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on(message('sticker'), (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
