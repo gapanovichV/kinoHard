@@ -1,11 +1,11 @@
 import dbConnect from "../dbConnect";
 import {handleError} from "../../utils";
-import {Channel} from "../models/channel.models";
+import {Channels} from "../models/channels.models";
 
 export const getAllChannel = async () => {
   try {
     await dbConnect()
-    const channels = await Channel.find()
+    const channels = await Channels.find()
     return {
       status: "success",
       data: JSON.parse(JSON.stringify(channels))
