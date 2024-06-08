@@ -1,20 +1,20 @@
 {
-  "dependencies": {
-    "mongodb": "^6.7.0",
-    "mongoose": "^8.4.1",
-    "nodemon": "^3.1.3",
-    "telegraf": "^4.16.3"
-  },
+  "name": "kinohard",
+  "version": "1.0.0",
+  "main": "src/app.ts",
+  "author": "@gapanovichV",
+  "license": "MIT",
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/app.ts",
     "format": "prettier --write **/*.{ts,tsx,css,mdx,cjs}",
     "lint": "eslint . --ext ts --ext tsx"
   },
-  "name": "kinohard",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "@gapanovichV",
-  "license": "MIT",
+  "dependencies": {
+    "grammy": "^1.24.1",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.3"
+  },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
     "@siberiacancode/eslint": "^1.1.1",

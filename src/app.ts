@@ -1,5 +1,4 @@
-import { Telegraf } from "telegraf"
-import { message } from "telegraf/filters"
+import { Bot, GrammyError, HttpError } from "grammy"
 
 import "dotenv/config"
 
@@ -8,14 +7,14 @@ import { createUser } from "./lib/database/actions/users.actions"
 import type { FilmParams } from "./lib/database/models/film.models"
 import { Status } from "./lib/database/types"
 
-const bot = new Telegraf(process.env.BOT_TOKEN)
+const bot = new Bot(process.env.BOT_TOKEN)
 
-bot.start((ctx) => {
-  ctx.reply("Welcome")
-  void createUser(ctx.update.message.from)
+bot.command("start", async (ctx) => {
+  await ctx.reply("Welcome")
+  await createUser(ctx.update.message.from)
 })
 
-bot.on(message("text"), async (ctx) => {
+bot.on("msg", async (ctx) => {
   // TODO: Сделать проверку на тип
   const filmFind = await getFilmByNumFilm(+ctx.message.text)
   if (filmFind.status === Status.Error) {
@@ -29,8 +28,17 @@ bot.on(message("text"), async (ctx) => {
   }
 })
 
-bot.launch()
+bot.catch((err) => {
+  const {ctx} = err;
+  console.error(`Error while handling update ${ctx.update.update_id}:`);
+  const e = err.error;
+  if (e instanceof GrammyError) {
+    console.error("Error in request:", e.description);
+  } else if (e instanceof HttpError) {
+    console.error("Could not contact Telegram:", e);
+  } else {
+    console.error("Unknown error:", e);
+  }
+});
 
-// Enable graceful stop
-process.once("SIGINT", () => bot.stop("SIGINT"))
-process.once("SIGTERM", () => bot.stop("SIGTERM"))
+bot.start()

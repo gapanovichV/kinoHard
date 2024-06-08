@@ -1,8 +1,8 @@
 import { handleError } from "../../utils"
 import dbConnect from "../dbConnect"
-import type { UsersParams } from "../models/users.models";
+import type { UsersParams } from "../models/users.models"
 import { Users } from "../models/users.models"
-import type { StatusResponse, UserCreateParams } from "../types";
+import type { StatusResponse, UserCreateParams } from "../types"
 import { Status } from "../types"
 
 export const findUserByChatId = async (chatId: number) => {
