@@ -17,7 +17,7 @@ async function dbConnect() {
 
   if (!cached.promise) {
     const opts = {
-      dbName: "Event_Hard",
+      dbName: "KinoHard",
       bufferCommands: false
     }
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
