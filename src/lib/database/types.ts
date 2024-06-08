@@ -7,7 +7,6 @@ export interface UserCreateParams {
   is_premium?: boolean
 }
 
-
 export interface StatusResponse {
   status: Status
   data?: any

@@ -1,35 +1,44 @@
-import {Telegraf} from "telegraf";
-import {message} from "telegraf/filters";
-import 'dotenv/config'
-import {createFilm, getFilmByNumFilm} from "../lib/database/actions/film.actions";
-import {createUser} from "../lib/database/actions/users.actions";
-import {Status} from "../lib/database/types";
-import {FilmParams} from "../lib/database/models/film.models";
+import { Bot, GrammyError, HttpError } from "grammy"
 
-const bot = new Telegraf(process.env.BOT_TOKEN as string)
+import "dotenv/config"
 
-bot.start((ctx) =>  {
-  ctx.reply('Welcome')
-    void createUser(ctx.update.message.from)
-}
-)
+import { getFilmByNumFilm } from "./lib/database/actions/film.actions"
+import { createUser } from "./lib/database/actions/users.actions"
+import type { FilmParams } from "./lib/database/models/film.models"
+import { Status } from "./lib/database/types"
 
-bot.on(message('text'), async (ctx) => {
+const bot = new Bot(process.env.BOT_TOKEN)
+
+bot.command("start", async (ctx) => {
+  await ctx.reply("Welcome")
+  await createUser(ctx.update.message.from)
+})
+
+bot.on("msg", async (ctx) => {
   // TODO: Сделать проверку на тип
   const filmFind = await getFilmByNumFilm(+ctx.message.text)
   if (filmFind.status === Status.Error) {
     // TODO: Сделать ответ если нет фильма по номеру
     await ctx.reply("ERROR")
   }
-  if  (filmFind.status === Status.Success || filmFind.data) {
+  if (filmFind.status === Status.Success || filmFind.data) {
     // TODO: Красиво оформить ответ
     const film: FilmParams = filmFind.data
     await ctx.reply(film.title + film.year)
   }
 })
 
-bot.launch()
+bot.catch((err) => {
+  const {ctx} = err;
+  console.error(`Error while handling update ${ctx.update.update_id}:`);
+  const e = err.error;
+  if (e instanceof GrammyError) {
+    console.error("Error in request:", e.description);
+  } else if (e instanceof HttpError) {
+    console.error("Could not contact Telegram:", e);
+  } else {
+    console.error("Unknown error:", e);
+  }
+});
 
-// Enable graceful stop
-process.once('SIGINT', () => bot.stop('SIGINT'))
-process.once('SIGTERM', () => bot.stop('SIGTERM'))
+bot.start()
