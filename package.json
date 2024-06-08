@@ -5,7 +5,7 @@
   "author": "@gapanovichV",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/app.ts",
+    "start": "nodemon src/app.ts",
     "format": "prettier --write **/*.{ts,tsx,css,mdx,cjs}",
     "lint": "eslint . --ext ts --ext tsx"
   },
