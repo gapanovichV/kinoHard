@@ -12,4 +12,4 @@ const channelsSchema = new Schema<ChannelsParams>({
   linkChannel: { type: String, required: true, unique: true }
 })
 
-export const Channels = models.Channel || model("Channel", channelsSchema)
+export const Channels = models.Channel || model("Channels", channelsSchema)
