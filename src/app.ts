@@ -37,6 +37,7 @@ bot.on("msg", async (ctx) => {
 bot.callbackQuery("check", async (ctx) => {
   await ctx.answerCallbackQuery()
   const chatId = ctx.update.callback_query.from.id
+  console.log(chatId)
 
 })
 bot.command("check", async (ctx) => {})
