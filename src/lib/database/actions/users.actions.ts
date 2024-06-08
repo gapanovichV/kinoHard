@@ -1,10 +1,11 @@
-import dbConnect from "../dbConnect";
-import {Users, UsersParams} from "../models/users.models";
-import {handleError} from "../../utils";
-import {Status, StatusResponse, UserCreateParams} from "../types";
+import { handleError } from "../../utils"
+import dbConnect from "../dbConnect"
+import type { UsersParams } from "../models/users.models";
+import { Users } from "../models/users.models"
+import type { StatusResponse, UserCreateParams } from "../types";
+import { Status } from "../types"
 
-
-export const findUserByChatId = async (chatId: number)=> {
+export const findUserByChatId = async (chatId: number) => {
   return Users.findOne({ chatId })
 }
 
@@ -13,8 +14,7 @@ export const createUser = async (user: UserCreateParams): Promise<StatusResponse
 
   const findUser = await findUserByChatId(user.id)
 
-  if (findUser !== null)
-    return {status: Status.Error, data: "This chatId already used by"}
+  if (findUser !== null) return { status: Status.Error, data: "This chatId already used by" }
 
   try {
     const newUser: UsersParams = await Users.create({
@@ -23,7 +23,7 @@ export const createUser = async (user: UserCreateParams): Promise<StatusResponse
       isPremium: user.is_premium,
       language: user.language_code,
       lastName: user.last_name!,
-      firstName: user.first_name!,
+      firstName: user.first_name!
     })
     return {
       status: Status.Success,
@@ -32,7 +32,7 @@ export const createUser = async (user: UserCreateParams): Promise<StatusResponse
   } catch (error) {
     handleError(error)
     return {
-      status: Status.Error,
+      status: Status.Error
     }
   }
 }

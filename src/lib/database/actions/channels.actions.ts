@@ -1,6 +1,6 @@
-import dbConnect from "../dbConnect";
-import {handleError} from "../../utils";
-import {Channels} from "../models/channels.models";
+import { handleError } from "../../utils"
+import dbConnect from "../dbConnect"
+import { Channels } from "../models/channels.models"
 
 export const getAllChannel = async () => {
   try {
