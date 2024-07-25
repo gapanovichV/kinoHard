@@ -23,8 +23,8 @@ export const createChannel = async (): Promise<StatusResponse> => {
   await dbConnect()
   try {
     const newChannel = await Channels.create({
-      nameChannel: "Сексология — всё о сексе",
-      linkChannel: "@sexoscope"
+      nameChannel: "Tests12",
+      linkChannel: "@tests12"
     })
     return {
       status: Status.Success,

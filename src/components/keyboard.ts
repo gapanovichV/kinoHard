@@ -10,10 +10,12 @@ interface keyboardResponse {
 }
 
 export const keyboard = async () => {
+  const keyboard = new InlineKeyboard()
   const response: keyboardResponse = await getAllChannel()
-  const buttonLinkChannels = response.data.map((channel: ChannelsParams) =>
-    InlineKeyboard.url(channel.nameChannel, `t.me/${channel.linkChannel}`)
+  response.data.map((channel: ChannelsParams) =>
+    keyboard.url(channel.nameChannel, `t.me/${channel.linkChannel}`).row()
   )
-  const buttonCheckSubscribe = InlineKeyboard.text("Проверить", "check")
-  return InlineKeyboard.from([buttonLinkChannels, [buttonCheckSubscribe]])
+  keyboard.text("Проверить", "check")
+
+  return keyboard
 }
