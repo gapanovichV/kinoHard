@@ -13,7 +13,7 @@ const bot = new Bot(process.env.BOT_TOKEN)
 bot.command("start", async (ctx) => {
   await createUser(ctx.update.message.from)
   await ctx.reply(
-    "⚠️ Чтобы получить актуальную ссылку на канал, необходимо подписаться на все каналы:",
+    "⚠️ Чтобы получить доступ, необходимо подписаться на все каналы:",
     {
       reply_markup: await keyboard()
     }
@@ -35,24 +35,26 @@ bot.on("msg", async (ctx) => {
 })
 
 bot.callbackQuery("check", async (ctx) => {
+  const res = await getAllChannel()
   await ctx.answerCallbackQuery()
   const chatId = ctx.update.callback_query.from.id
-  console.log(chatId)
+  const z = await ctx.api.getChatMember(`@sexoscope`, chatId)
+
+  const x = await res.data.forEach(async (channel) => {
+    return ctx.api.getChatMember(`@${channel.linkChannel}`, chatId)
+  })
 
 })
-bot.command("check", async (ctx) => {})
 
-bot.catch((err) => {
-  const { ctx } = err
+bot.catch(({error, ctx}) => {
   console.error(`Error while handling update ${ctx.update.update_id}:`)
-  const e = err.error
-  if (e instanceof GrammyError) {
-    console.error("Error in request:", e.description)
-  } else if (e instanceof HttpError) {
-    console.error("Could not contact Telegram:", e)
-  } else {
-    console.error("Unknown error:", e)
+  if (error instanceof GrammyError) {
+    console.error("Error in request:", error.description)
   }
+  if (error instanceof HttpError) {
+    console.error("Could not contact Telegram:", error)
+  }
+  console.error("Unknown error:", error)
 })
 
 bot.start()
