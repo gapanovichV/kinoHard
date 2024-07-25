@@ -3,6 +3,7 @@ import { Bot, GrammyError, HttpError } from "grammy"
 import "dotenv/config"
 
 import { keyboard } from "./components/keyboard"
+import { getAllChannel } from "./lib/database/actions/channels.actions"
 import { getFilmByNumFilm } from "./lib/database/actions/film.actions"
 import { createUser } from "./lib/database/actions/users.actions"
 import type { FilmParams } from "./lib/database/models/film.models"
